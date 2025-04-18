@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ask Me Anything Timeline</title>
+  <link rel="stylesheet" href="https://unpkg.com/vis-timeline@latest/styles/vis-timeline-graph2d.min.css">
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #0e0e0e;
+      color: #fff;
+      margin: 0;
+      padding: 0;
+    }
+    #timeline {
+      margin: 20px;
+      background: #1e1e1e;
+      border-radius: 10px;
+      padding: 10px;
+    }
+    #details {
+      padding: 20px;
+      background: #222;
+      margin: 20px;
+      border-radius: 10px;
+    }
+    h1 {
+      text-align: center;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Ask Me Anything Timeline</h1>
+  <div id="timeline"></div>
+  <div id="details">
+    <h2>Click on a timeline entry to learn more</h2>
+    <p id="description">I will show detailed info here when you interact with the timeline above.</p>
+  </div>
+
+  <script src="https://unpkg.com/vis-timeline@latest/standalone/umd/vis-timeline-graph2d.min.js"></script>
+  <script>
+    const container = document.getElementById('timeline');
+    const items = new vis.DataSet([
+      { id: 1, content: 'TCS - Assistant Systems Engineer', start: '2022-03', end: '2023-06' },
+      { id: 2, content: 'Infosys - Intern', start: '2019-01', end: '2019-05' },
+      { id: 3, content: 'Built AI Podcast Generator', start: '2025-02' },
+      { id: 4, content: 'Self-hosted Home Server', start: '2025-03' },
+      { id: 5, content: 'Cybersecurity Competition', start: '2025-03' }
+    ]);
+
+    const options = {
+      height: '300px',
+      zoomMin: 1000 * 60 * 60 * 24 * 30 * 3,
+      stack: false,
+      editable: false,
+      margin: { item: 20 }
+    };
+
+    const timeline = new vis.Timeline(container, items, options);
+
+    const details = {
+      1: "Worked at TCS on .NET automation. Reduced bugs by 30% through proactive debugging and support ops integration.",
+      2: "Completed a full-stack web app as an Infosys intern using Node.js and XML.",
+      3: "Built an AI-powered podcast generator using local LLMs, OCR, TTS, and Electron — deployed via GitHub Pages.",
+      4: "Set up Docker-based home server on Mac mini M4: Nginx Proxy Manager, Nextcloud, Jellyfin, Pi-hole, and VPN.",
+      5: "Participated in live defense cybersecurity challenge. Hardened multiple Kali VMs and deployed logging, VPN & UFW."
+    };
+
+    timeline.on('select', function (props) {
+      const id = props.items[0];
+      if (id && details[id]) {
+        document.getElementById('description').innerText = details[id];
+      }
+    });
+  </script>
+</body>
+</html>
