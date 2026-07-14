@@ -2,11 +2,126 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta http-equiv="refresh" content="0; url=https://jay739.duckdns.org" />
-    <title>Redirecting...</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>apps.jay739.dev: open source apps by Jayakrishna Konda</title>
+    <meta name="description" content="Self-hosted and native open source apps: transcription, alarms, window dimming, Jellyfin management, note-taking clients and Claude Code hooks." />
+    <meta property="og:title" content="apps.jay739.dev" />
+    <meta property="og:description" content="Open source apps by Jayakrishna Konda: self-hosted tools, native desktop and Android apps, and Claude Code hooks." />
+    <meta property="og:type" content="website" />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20viewBox%3D%270%200%20100%20100%27%3E%3Ctext%20y%3D%270.9em%27%20font-size%3D%2790%27%3E%F0%9F%93%A6%3C/text%3E%3C/svg%3E" />
+    <style>
+:root {
+  --bg: #0b0f14; --panel: #11161d; --border: #1f2833; --text: #e6edf3;
+  --muted: #93a1b0; --accent: #60a5fa; --code-bg: #0d1420;
+  color-scheme: dark light;
+}
+@media (prefers-color-scheme: light) {
+  :root {
+    --bg: #f7f9fb; --panel: #ffffff; --border: #dfe6ee; --text: #101826;
+    --muted: #5b6b7c; --code-bg: #f1f5f9;
+  }
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  background: var(--bg); color: var(--text);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  line-height: 1.6; -webkit-font-smoothing: antialiased;
+}
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+.wrap { max-width: 920px; margin: 0 auto; padding: 0 1.25rem; }
+nav {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 1.1rem 0; font-size: 0.95rem;
+}
+nav .brand { color: var(--muted); font-weight: 600; }
+nav .brand:hover { color: var(--text); text-decoration: none; }
+header.hero { padding: 3.5rem 0 3rem; }
+.pills { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1.1rem; }
+.pill {
+  font-size: 0.78rem; font-weight: 600; letter-spacing: 0.02em;
+  padding: 0.22rem 0.7rem; border-radius: 999px;
+  border: 1px solid var(--border); color: var(--muted); background: var(--panel);
+}
+.pill.accent { color: var(--accent); border-color: color-mix(in srgb, var(--accent) 45%, transparent); }
+h1 { font-size: clamp(2.3rem, 6vw, 3.4rem); line-height: 1.1; letter-spacing: -0.02em; }
+h1 .dot { color: var(--accent); }
+.lead { font-size: clamp(1.15rem, 2.6vw, 1.45rem); font-weight: 500; margin-top: 0.9rem; }
+.desc { color: var(--muted); margin-top: 0.9rem; max-width: 46rem; }
+.actions { display: flex; gap: 0.75rem; flex-wrap: wrap; margin-top: 1.8rem; }
+.btn {
+  display: inline-block; padding: 0.6rem 1.15rem; border-radius: 8px;
+  font-weight: 600; font-size: 0.95rem; border: 1px solid var(--border);
+  background: var(--panel); color: var(--text);
+}
+.btn.primary { background: var(--accent); border-color: var(--accent); color: #0b0f14; }
+.btn:hover { text-decoration: none; filter: brightness(1.1); }
+section { padding: 2.2rem 0; border-top: 1px solid var(--border); }
+section h2 { font-size: 1.35rem; margin-bottom: 1.3rem; letter-spacing: -0.01em; }
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 0.9rem; }
+.card {
+  background: var(--panel); border: 1px solid var(--border);
+  border-radius: 10px; padding: 1.1rem 1.2rem;
+}
+.card h3 { font-size: 1rem; margin-bottom: 0.35rem; }
+.card h3::before { content: "\25AA\FE0E  "; color: var(--accent); }
+.card p { font-size: 0.92rem; color: var(--muted); }
+pre {
+  background: var(--code-bg); border: 1px solid var(--border);
+  border-left: 3px solid var(--accent); border-radius: 8px;
+  padding: 1rem 1.2rem; overflow-x: auto; font-size: 0.9rem; line-height: 1.55;
+}
+code { font-family: ui-monospace, "Cascadia Code", Consolas, monospace; }
+.credit {
+  background: var(--panel); border: 1px solid var(--border); border-radius: 10px;
+  padding: 1rem 1.2rem; font-size: 0.92rem; color: var(--muted);
+}
+footer {
+  border-top: 1px solid var(--border); padding: 1.6rem 0 2.4rem;
+  font-size: 0.88rem; color: var(--muted);
+  display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap;
+}
+/* hub */
+.applist { display: grid; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); gap: 0.9rem; }
+a.appcard {
+  display: block; background: var(--panel); border: 1px solid var(--border);
+  border-radius: 10px; padding: 1.15rem 1.25rem; color: var(--text);
+}
+a.appcard:hover { text-decoration: none; border-color: var(--card-accent); }
+a.appcard h3 { font-size: 1.05rem; }
+a.appcard h3::before { content: "\25CF  "; color: var(--card-accent); font-size: 0.7em; vertical-align: 2px; }
+a.appcard p { font-size: 0.9rem; color: var(--muted); margin-top: 0.3rem; }
+a.appcard .meta { display: block; margin-top: 0.6rem; font-size: 0.78rem; color: var(--card-accent); font-weight: 600; }
+.appcard.soon { opacity: 0.75; }
+</style>
   </head>
-  <body style="text-align: center; font-family: sans-serif; padding-top: 50px;">
-    <h2>Redirecting to my portfolio...</h2>
-    <p>If not redirected, <a href="https://jay739.duckdns.org">click here</a>.</p>
+  <body>
+    <div class="wrap">
+      <nav>
+        <span class="brand">apps.jay739.dev</span>
+        <a href="https://github.com/jay739">GitHub &nearr;</a>
+      </nav>
+      <header class="hero">
+        <h1>Apps<span class="dot">.</span></h1>
+        <p class="lead">Open source software I build and run myself.</p>
+        <p class="desc">Self-hosted alternatives to paid services, native desktop and Android apps, and developer tooling. Everything here is MIT licensed and lives on <a href="https://github.com/jay739">GitHub</a>.</p>
+      </header>
+      <section>
+        <h2>Apps</h2>
+        <div class="applist"><a class="appcard" style="--card-accent:#2dd4bf" href="./scribe/"><h3>scribe</h3><p>Your audio, transcribed on your own GPU.</p><span class="meta">Self-hosted &middot; Working build</span></a><a class="appcard" style="--card-accent:#f59e0b" href="./wakeharder/"><h3>wakeharder</h3><p>The alarm you cannot sleep through.</p><span class="meta">Android &middot; In development</span></a><a class="appcard" style="--card-accent:#818cf8" href="./omnifin/"><h3>omnifin</h3><p>Unified Jellyfin user management.</p><span class="meta">Self-hosted &middot; Released, Docker images</span></a><a class="appcard" style="--card-accent:#a78bfa" href="./openhaze/"><h3>OpenHaze</h3><p>Dim background windows. Focus on the one that matters.</p><span class="meta">macOS + Windows &middot; Working on both platforms</span></a><a class="appcard" style="--card-accent:#34d399" href="./triliage/"><h3>triliage</h3><p>A modern, native desktop client for Trilium Notes.</p><span class="meta">Desktop client &middot; Early scaffold</span></a></div>
+      </section>
+      <section>
+        <h2>Claude Code hooks</h2>
+        <div class="applist"><a class="appcard" style="--card-accent:#fb7185" href="./claude-pop-quiz/"><h3>claude-pop-quiz</h3><p>Get quizzed on the code your agent wrote.</p><span class="meta">Claude Code hook &middot; v0.5.1</span></a><a class="appcard" style="--card-accent:#38bdf8" href="./claude-memory-checkpoint/"><h3>claude-memory-checkpoint</h3><p>Long chats summarize themselves into project memory.</p><span class="meta">Claude Code hook &middot; Stable</span></a><a class="appcard" style="--card-accent:#a3e635" href="./claude-autoformat/"><h3>claude-autoformat</h3><p>Every file Claude edits comes out formatted.</p><span class="meta">Claude Code hook &middot; Stable</span></a></div>
+      </section>
+      <section>
+        <h2>In the works</h2>
+        <div class="applist"><a class="appcard soon" style="--card-accent:#f97316" href="https://github.com/jay739"><h3>sitrep</h3><p>Self-hosted incident and status pages layered on Uptime Kuma.</p><span class="meta">Coming soon</span></a><a class="appcard soon" style="--card-accent:#22d3ee" href="https://github.com/jay739"><h3>HomelabTray</h3><p>Native system-tray monitor for homelab services.</p><span class="meta">Coming soon</span></a><a class="appcard soon" style="--card-accent:#818cf8" href="https://github.com/jay739"><h3>Omnifin-Windows</h3><p>Native Windows client for Omnifin.</p><span class="meta">Coming soon</span></a></div>
+      </section>
+      <footer>
+        <span>&copy; 2026 Jayakrishna Konda</span>
+        <span><a href="https://jay739.dev">jay739.dev</a> &middot; <a href="https://github.com/jay739">GitHub</a></span>
+      </footer>
+    </div>
   </body>
 </html>
