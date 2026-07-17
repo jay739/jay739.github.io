@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="123" ry="123" fill="#0B0D10"/>
+  <g id="icon">
+    <!-- spokes (thick solid bars radiating from center to satellite nodes) -->
+    <rect x="238" y="130" width="36" height="98" fill="#F2F0EA"/>
+    <rect x="284" y="238" width="98" height="36" fill="#F2F0EA"/>
+    <rect x="238" y="284" width="36" height="98" fill="#F2F0EA"/>
+    <rect x="130" y="238" width="98" height="36" fill="#F2F0EA"/>
+    <!-- satellite nodes -->
+    <circle cx="256" cy="112" r="38" fill="#F2F0EA"/>
+    <circle cx="400" cy="256" r="38" fill="#F2F0EA"/>
+    <circle cx="256" cy="400" r="38" fill="#F2F0EA"/>
+    <circle cx="112" cy="256" r="38" fill="#F2F0EA"/>
+    <!-- center hub node (largest, drawn last so it sits on top) -->
+    <circle cx="256" cy="256" r="80" fill="#F2F0EA"/>
+  </g>
+</svg>
