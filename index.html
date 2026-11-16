@@ -35,11 +35,9 @@
         --border-hi: #4d443b;
         --text: #f1f5f9;
         --muted: #94a3b8;
-        --dim: #635a4f;
+        --dim: #8c8071;
         --accent: #f68d31;
         --accent-dim: #d9711c;
-        --live: #4ade80;
-        --amber: #fbb337;
         --shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
         --shadow-hover:
           0 12px 28px -8px rgba(0, 0, 0, 0.65), 0 0 0 1px var(--border-hi);
@@ -66,11 +64,9 @@
           --border-hi: #d1b896;
           --text: #221a10;
           --muted: #71675a;
-          --dim: #a89a86;
-          --accent: #c9660f;
+          --dim: #7c6d59;
+          --accent: #af590d;
           --accent-dim: #a3540c;
-          --live: #16a34a;
-          --amber: #a5690a;
           --shadow: 0 1px 2px rgba(40, 25, 10, 0.06);
           --shadow-hover:
             0 16px 28px -10px rgba(40, 25, 10, 0.14), 0 0 0 1px var(--border-hi);
@@ -105,17 +101,6 @@
           opacity: 0.35;
         }
       }
-      @keyframes ring {
-        0% {
-          box-shadow: 0 0 0 0
-            color-mix(in srgb, var(--state-color) 45%, transparent);
-        }
-        100% {
-          box-shadow: 0 0 0 8px
-            color-mix(in srgb, var(--state-color) 0%, transparent);
-        }
-      }
-
       body {
         background: var(--bg-glow), var(--bg);
         color: var(--text);
@@ -207,22 +192,6 @@
         max-width: 40rem;
         font-size: 1.02rem;
       }
-      .stats {
-        display: flex;
-        gap: 1.6rem;
-        margin-top: 1.6rem;
-        flex-wrap: wrap;
-        font-family: var(--font-mono);
-        font-size: 0.85rem;
-      }
-      .stats .stat {
-        color: var(--muted);
-      }
-      .stats .stat b {
-        color: var(--text);
-        font-weight: 700;
-      }
-
       section {
         padding: 1.7rem 0 0.4rem;
       }
@@ -277,11 +246,7 @@
         inset: 0;
         background: radial-gradient(
           160px 90px at 0% 50%,
-          color-mix(
-            in srgb,
-            var(--state-color, var(--accent)) 14%,
-            transparent
-          ),
+          color-mix(in srgb, var(--accent) 14%, transparent),
           transparent 70%
         );
         opacity: 0;
@@ -303,15 +268,11 @@
         opacity: 1;
       }
       a.row:hover .rowname {
-        color: var(--state-color, var(--accent));
+        color: var(--accent);
       }
       a.row:hover .icon {
         transform: scale(1.08) rotate(-3deg);
-        border-color: color-mix(
-          in srgb,
-          var(--state-color, var(--accent)) 55%,
-          var(--border)
-        );
+        border-color: color-mix(in srgb, var(--accent) 55%, var(--border));
       }
       a.row:hover .icon svg {
         transform: scale(1.05);
@@ -331,19 +292,10 @@
         justify-content: center;
         background: linear-gradient(
           160deg,
-          color-mix(
-            in srgb,
-            var(--state-color, var(--accent)) 18%,
-            var(--panel)
-          ),
-          color-mix(in srgb, var(--state-color, var(--accent)) 4%, var(--panel))
+          color-mix(in srgb, var(--accent) 18%, var(--panel)),
+          color-mix(in srgb, var(--accent) 4%, var(--panel))
         );
-        border: 1px solid
-          color-mix(
-            in srgb,
-            var(--state-color, var(--accent)) 25%,
-            var(--border)
-          );
+        border: 1px solid color-mix(in srgb, var(--accent) 25%, var(--border));
         transition:
           transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
           border-color 0.3s;
@@ -351,36 +303,8 @@
       .icon svg {
         width: 1.15rem;
         height: 1.15rem;
-        stroke: var(--state-color, var(--accent));
+        stroke: var(--accent);
         transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-      }
-      .row.planned .icon {
-        background: var(--panel);
-        border-color: var(--border);
-      }
-      .row.planned .icon svg {
-        stroke: var(--dim);
-      }
-
-      .dot {
-        width: 0.5rem;
-        height: 0.5rem;
-        border-radius: 50%;
-        flex-shrink: 0;
-        background: var(--state-color, var(--accent));
-        position: absolute;
-        top: 0.6rem;
-        left: 2.05rem;
-        box-shadow: 0 0 0 2px var(--panel);
-      }
-      @media (prefers-reduced-motion: no-preference) {
-        .dot.live::after {
-          content: "";
-          position: absolute;
-          inset: 0;
-          border-radius: 50%;
-          animation: ring 1.8s ease-out infinite;
-        }
       }
       .rowtext {
         flex: 1;
@@ -401,7 +325,7 @@
       .rowstate {
         font-family: var(--font-mono);
         font-size: 0.75rem;
-        color: var(--state-color, var(--muted));
+        color: var(--muted);
         white-space: nowrap;
         flex-shrink: 0;
       }
@@ -417,14 +341,10 @@
           display: none;
         }
       }
-      .row.planned {
-        opacity: 0.7;
-      }
-      .row.planned .rowname {
+      .aside {
+        margin-top: 2rem;
+        font-size: 0.88rem;
         color: var(--muted);
-      }
-      .row.planned:hover {
-        opacity: 0.9;
       }
 
       footer {
@@ -466,7 +386,19 @@
   <body>
     <div class="wrap">
       <nav>
-        <span class="brand"><img src="logo.svg" alt="" width="22" height="22" style="vertical-align: -5px; margin-right: 0.4rem; border-radius: 22%" /><b>apps</b>.jay739.dev</span>
+        <span class="brand"
+          ><img
+            src="logo.svg"
+            alt=""
+            width="22"
+            height="22"
+            style="
+              vertical-align: -5px;
+              margin-right: 0.4rem;
+              border-radius: 22%;
+            "
+          /><b>apps</b>.jay739.dev</span
+        >
         <a class="gh" href="https://github.com/jay739">github &nearr;</a>
       </nav>
 
@@ -477,22 +409,16 @@
         </h1>
         <p class="desc">
           Software I run myself instead of renting. Self-hosted alternatives to
-          paid services, native desktop and Android apps, and developer tooling
-          &mdash; all MIT licensed, all on
+          paid services, native desktop and Android apps, and developer tooling.
+          All MIT licensed, all on
           <a href="https://github.com/jay739">GitHub</a>.
         </p>
-        <div class="stats">
-          <span class="stat"><b>3</b> running</span>
-          <span class="stat"><b>2</b> building</span>
-          <span class="stat"><b>3</b> Claude Code hooks</span>
-          <span class="stat"><b>3</b> planned</span>
-        </div>
       </header>
 
       <section class="fade-in" style="animation-delay: 0.05s">
-        <div class="section-head"><span class="label">running</span></div>
+        <div class="section-head"><span class="label">self-hosted</span></div>
         <div class="rowlist">
-          <a class="row" style="--state-color: #4ade80" href="./scribe/">
+          <a class="row" href="./scribe/">
             <span class="icon" aria-hidden="true">
               <svg
                 viewBox="0 0 24 24"
@@ -503,32 +429,61 @@
                 <path d="M4 12v1M8 9v7M12 5v15M16 9v7M20 12v1" />
               </svg>
             </span>
-            <span class="dot live"></span>
             <span class="rowtext">
               <span class="rowname">scribe</span>
               <span class="rowdesc"
                 >Your audio, transcribed on your own GPU.</span
               >
             </span>
-            <span class="rowstate">self-hosted</span>
+            <span class="rowstate">NVIDIA GPU</span>
             <span class="rowarrow" aria-hidden="true">&rarr;</span>
           </a>
-          <a class="row" style="--state-color: #4ade80" href="./omnifin/">
+          <a class="row" href="./omnifin/">
             <span class="icon" aria-hidden="true">
               <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
                 <circle cx="9" cy="12" r="5.5" />
                 <circle cx="15" cy="12" r="5.5" opacity="0.55" />
               </svg>
             </span>
-            <span class="dot live"></span>
             <span class="rowtext">
               <span class="rowname">omnifin</span>
               <span class="rowdesc">Unified Jellyfin user management.</span>
             </span>
-            <span class="rowstate">released &middot; docker</span>
+            <span class="rowstate">v1.4.1 &middot; Docker</span>
             <span class="rowarrow" aria-hidden="true">&rarr;</span>
           </a>
-          <a class="row" style="--state-color: #4ade80" href="./openhaze/">
+          <a class="row" href="https://github.com/jay739/sitrep">
+            <span class="icon" aria-hidden="true">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M12 3 3 8l9 5 9-5-9-5Z" />
+                <path d="M3 16l9 5 9-5M3 12l9 5 9-5" />
+              </svg>
+            </span>
+            <span class="rowtext">
+              <span class="rowname">sitrep</span>
+              <span class="rowdesc"
+                >Self-hosted incident and status pages layered on Uptime
+                Kuma.</span
+              >
+            </span>
+            <span class="rowstate">v0.1.0 &middot; Docker</span>
+            <span class="rowarrow" aria-hidden="true">&rarr;</span>
+          </a>
+        </div>
+      </section>
+
+      <section class="fade-in" style="animation-delay: 0.1s">
+        <div class="section-head">
+          <span class="label">desktop and mobile</span>
+        </div>
+        <div class="rowlist">
+          <a class="row" href="./openhaze/">
             <span class="icon" aria-hidden="true">
               <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
                 <rect x="3.5" y="4.5" width="17" height="15" rx="2.5" />
@@ -545,23 +500,16 @@
                 <circle cx="12" cy="12" r="3.4" />
               </svg>
             </span>
-            <span class="dot live"></span>
             <span class="rowtext">
               <span class="rowname">openhaze</span>
               <span class="rowdesc"
                 >Dim background windows. Focus on the one that matters.</span
               >
             </span>
-            <span class="rowstate">macos &middot; windows</span>
+            <span class="rowstate">v0.3.0 &middot; macOS, Windows</span>
             <span class="rowarrow" aria-hidden="true">&rarr;</span>
           </a>
-        </div>
-      </section>
-
-      <section class="fade-in" style="animation-delay: 0.1s">
-        <div class="section-head"><span class="label">building</span></div>
-        <div class="rowlist">
-          <a class="row" style="--state-color: #e3b341" href="./wakeharder/">
+          <a class="row" href="./wakeharder/">
             <span class="icon" aria-hidden="true">
               <svg
                 viewBox="0 0 24 24"
@@ -575,15 +523,14 @@
                 <path d="M12 4V2.5" />
               </svg>
             </span>
-            <span class="dot"></span>
             <span class="rowtext">
               <span class="rowname">wakeharder</span>
               <span class="rowdesc">The alarm you cannot sleep through.</span>
             </span>
-            <span class="rowstate">android</span>
+            <span class="rowstate">Android</span>
             <span class="rowarrow" aria-hidden="true">&rarr;</span>
           </a>
-          <a class="row" style="--state-color: #e3b341" href="./triliage/">
+          <a class="row" href="./triliage/">
             <span class="icon" aria-hidden="true">
               <svg
                 viewBox="0 0 24 24"
@@ -595,14 +542,13 @@
                 <path d="M12 3v18M12 8 7 5M12 12 6 9M12 16l-5-2.5" />
               </svg>
             </span>
-            <span class="dot"></span>
             <span class="rowtext">
               <span class="rowname">triliage</span>
               <span class="rowdesc"
                 >A modern, native desktop client for Trilium Notes.</span
               >
             </span>
-            <span class="rowstate">early scaffold</span>
+            <span class="rowstate">Windows</span>
             <span class="rowarrow" aria-hidden="true">&rarr;</span>
           </a>
         </div>
@@ -613,11 +559,7 @@
           <span class="label">claude code hooks</span>
         </div>
         <div class="rowlist">
-          <a
-            class="row"
-            style="--state-color: #4ade80"
-            href="./claude-pop-quiz/"
-          >
+          <a class="row" href="./claude-pop-quiz/">
             <span class="icon" aria-hidden="true">
               <svg
                 viewBox="0 0 24 24"
@@ -635,21 +577,16 @@
                 />
               </svg>
             </span>
-            <span class="dot live"></span>
             <span class="rowtext">
               <span class="rowname">claude-pop-quiz</span>
               <span class="rowdesc"
                 >Get quizzed on the code your agent wrote.</span
               >
             </span>
-            <span class="rowstate">v0.5.1</span>
+            <span class="rowstate">v0.5.3</span>
             <span class="rowarrow" aria-hidden="true">&rarr;</span>
           </a>
-          <a
-            class="row"
-            style="--state-color: #4ade80"
-            href="./claude-memory-checkpoint/"
-          >
+          <a class="row" href="./claude-memory-checkpoint/">
             <span class="icon" aria-hidden="true">
               <svg
                 viewBox="0 0 24 24"
@@ -662,21 +599,16 @@
                 <path d="M17.5 3.5v3.5H14" />
               </svg>
             </span>
-            <span class="dot live"></span>
             <span class="rowtext">
               <span class="rowname">claude-memory-checkpoint</span>
               <span class="rowdesc"
                 >Long chats summarize themselves into project memory.</span
               >
             </span>
-            <span class="rowstate">stable</span>
+            <span class="rowstate">no release yet</span>
             <span class="rowarrow" aria-hidden="true">&rarr;</span>
           </a>
-          <a
-            class="row"
-            style="--state-color: #4ade80"
-            href="./claude-autoformat/"
-          >
+          <a class="row" href="./claude-autoformat/">
             <span class="icon" aria-hidden="true">
               <svg
                 viewBox="0 0 24 24"
@@ -688,101 +620,22 @@
                 <path d="M4 6h16M4 12h10M4 18h13" />
               </svg>
             </span>
-            <span class="dot live"></span>
             <span class="rowtext">
               <span class="rowname">claude-autoformat</span>
               <span class="rowdesc"
                 >Every file Claude edits comes out formatted.</span
               >
             </span>
-            <span class="rowstate">stable</span>
+            <span class="rowstate">no release yet</span>
             <span class="rowarrow" aria-hidden="true">&rarr;</span>
           </a>
         </div>
       </section>
 
-      <section class="fade-in" style="animation-delay: 0.2s">
-        <div class="section-head"><span class="label">planned</span></div>
-        <div class="rowlist">
-          <a
-            class="row planned"
-            style="--state-color: #4a5760"
-            href="https://github.com/jay739"
-          >
-            <span class="icon" aria-hidden="true">
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
-                <path d="M12 3 3 8l9 5 9-5-9-5Z" />
-                <path d="M3 16l9 5 9-5M3 12l9 5 9-5" />
-              </svg>
-            </span>
-            <span class="dot" style="--state-color: #4a5760"></span>
-            <span class="rowtext">
-              <span class="rowname">sitrep</span>
-              <span class="rowdesc"
-                >Self-hosted incident and status pages layered on Uptime
-                Kuma.</span
-              >
-            </span>
-            <span class="rowstate">planned</span>
-            <span class="rowarrow" aria-hidden="true">&rarr;</span>
-          </a>
-          <a
-            class="row planned"
-            style="--state-color: #4a5760"
-            href="https://github.com/jay739"
-          >
-            <span class="icon" aria-hidden="true">
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
-                <rect x="4" y="7" width="16" height="11" rx="2" />
-                <path
-                  d="M8 7V5.5A2.5 2.5 0 0 1 10.5 3h3A2.5 2.5 0 0 1 16 5.5V7"
-                />
-              </svg>
-            </span>
-            <span class="dot" style="--state-color: #4a5760"></span>
-            <span class="rowtext">
-              <span class="rowname">homelabtray</span>
-              <span class="rowdesc"
-                >Native system-tray monitor for homelab services.</span
-              >
-            </span>
-            <span class="rowstate">planned</span>
-            <span class="rowarrow" aria-hidden="true">&rarr;</span>
-          </a>
-          <a
-            class="row planned"
-            style="--state-color: #4a5760"
-            href="https://github.com/jay739"
-          >
-            <span class="icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
-                <rect x="3.5" y="5" width="17" height="14" rx="2" />
-                <path d="M8 9h8M8 13h5" stroke-linecap="round" />
-              </svg>
-            </span>
-            <span class="dot" style="--state-color: #4a5760"></span>
-            <span class="rowtext">
-              <span class="rowname">omnifin-windows</span>
-              <span class="rowdesc">Native Windows client for Omnifin.</span>
-            </span>
-            <span class="rowstate">planned</span>
-            <span class="rowarrow" aria-hidden="true">&rarr;</span>
-          </a>
-        </div>
-      </section>
-
+      <p class="aside fade-in" style="animation-delay: 0.2s">
+        Also in progress, not public yet: a native Windows client for Omnifin,
+        and HomelabTray, a system-tray monitor for homelab services.
+      </p>
       <footer>
         <span>&copy; 2026 Jayakrishna Konda</span>
         <span
