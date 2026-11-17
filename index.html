@@ -6,378 +6,480 @@
     <title>apps.jay739.dev: open source apps by Jayakrishna Konda</title>
     <meta
       name="description"
-      content="Self-hosted and native open source apps: transcription, alarms, window dimming, Jellyfin management, note-taking clients and Claude Code hooks."
+      content="Software I run myself instead of renting: self-hosted services, desktop and phone apps, and tools for developers, all open source under MIT."
     />
     <meta property="og:title" content="apps.jay739.dev" />
     <meta
       property="og:description"
-      content="Open source apps by Jayakrishna Konda: self-hosted tools, native desktop and Android apps, and Claude Code hooks."
+      content="Self-hosted services, desktop and phone apps, and tools for developers by Jayakrishna Konda. All open source under MIT."
     />
     <meta property="og:type" content="website" />
     <link rel="icon" type="image/svg+xml" href="logo.svg" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Space+Grotesk:wght@500;700&display=swap"
-      rel="stylesheet"
+      rel="preload"
+      href="fonts/bricolage-grotesque.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
     />
     <style>
-      :root {
-        --bg: #030303;
-        --bg-glow: radial-gradient(
-          ellipse 900px 500px at 50% -10%,
-          rgba(246, 141, 49, 0.1),
-          transparent 60%
-        );
-        --panel: #121212;
-        --panel-hover: #1a1714;
-        --border: #332d28;
-        --border-hi: #4d443b;
-        --text: #f1f5f9;
-        --muted: #94a3b8;
-        --dim: #8c8071;
-        --accent: #f68d31;
-        --accent-dim: #d9711c;
-        --shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
-        --shadow-hover:
-          0 12px 28px -8px rgba(0, 0, 0, 0.65), 0 0 0 1px var(--border-hi);
-        --font-display:
-          "Space Grotesk", ui-sans-serif, "SF Pro Display", "Helvetica Neue",
-          Arial, sans-serif;
-        --font-mono:
-          "JetBrains Mono", ui-monospace, "Cascadia Code", Consolas,
-          "SFMono-Regular", monospace;
-        --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-        color-scheme: dark light;
+      @font-face {
+        font-family: "Bricolage Grotesque";
+        src: url("fonts/bricolage-grotesque.woff2") format("woff2");
+        font-weight: 500 800;
+        font-display: swap;
       }
-      @media (prefers-color-scheme: light) {
+      @font-face {
+        font-family: "Instrument Sans";
+        src: url("fonts/instrument-sans.woff2") format("woff2");
+        font-weight: 400 600;
+        font-display: swap;
+      }
+      @font-face {
+        font-family: "IBM Plex Mono";
+        src: url("fonts/ibm-plex-mono-400.woff2") format("woff2");
+        font-weight: 400;
+        font-display: swap;
+      }
+      @font-face {
+        font-family: "IBM Plex Mono";
+        src: url("fonts/ibm-plex-mono-500.woff2") format("woff2");
+        font-weight: 500;
+        font-display: swap;
+      }
+
+      /* The page uses the two colours every app logo shares; each tile adds its logo's accent. */
+      :root {
+        --ink: #0b0d10;
+        --paper: #f2f0ea;
+        --bg: var(--paper);
+        --text: var(--ink);
+        --soft: #4f535a;
+        --line: #d9d5ca;
+        --tile: #e9e6de;
+        --frame: #ffffff;
+        --frame-bar: #ece9e2;
+        --display: "Bricolage Grotesque", ui-sans-serif, system-ui, sans-serif;
+        --body: "Instrument Sans", ui-sans-serif, system-ui, sans-serif;
+        --mono: "IBM Plex Mono", ui-monospace, Consolas, monospace;
+        color-scheme: light dark;
+      }
+      @media (prefers-color-scheme: dark) {
         :root {
-          --bg: #faf7f2;
-          --bg-glow: radial-gradient(
-            ellipse 900px 500px at 50% -10%,
-            rgba(217, 113, 28, 0.08),
-            transparent 60%
-          );
-          --panel: #ffffff;
-          --panel-hover: #fdfaf6;
-          --border: #e8ddd0;
-          --border-hi: #d1b896;
-          --text: #221a10;
-          --muted: #71675a;
-          --dim: #7c6d59;
-          --accent: #af590d;
-          --accent-dim: #a3540c;
-          --shadow: 0 1px 2px rgba(40, 25, 10, 0.06);
-          --shadow-hover:
-            0 16px 28px -10px rgba(40, 25, 10, 0.14), 0 0 0 1px var(--border-hi);
+          --bg: var(--ink);
+          --text: var(--paper);
+          --soft: #a3a6ab;
+          --line: #23272d;
+          --tile: #14171b;
+          --frame: #1b1f24;
+          --frame-bar: #22262c;
         }
       }
+
+      .a-scribe {
+        --a: #4a9eff;
+      }
+      .a-omnifin {
+        --a: #ffb300;
+      }
+      .a-sitrep {
+        --a: #d03b3b;
+      }
+      .a-cadence {
+        --a: #e0a12e;
+      }
+      .a-email {
+        --a: #f59e0b;
+      }
+      .a-openhaze {
+        --a: #a78bfa;
+      }
+      .a-wakeharder {
+        --a: #ff5a36;
+      }
+      .a-triliage {
+        --a: #8b7cf6;
+      }
+      .a-rainier {
+        --a: #22d3ee;
+      }
+      .a-plash {
+        --a: #a5b4fc;
+      }
+      .a-popquiz {
+        --a: #f472b6;
+      }
+      .a-memck {
+        --a: #38bdf8;
+      }
+      .a-autoformat {
+        --a: #a3e635;
+      }
+      .a-sitediff {
+        --a: #2dd4bf;
+      }
+      .a-ragproxy {
+        --a: #e879f9;
+      }
+      .a-podcastai {
+        --a: #fb923c;
+      }
+
       * {
+        box-sizing: border-box;
         margin: 0;
         padding: 0;
-        box-sizing: border-box;
-      }
-      @media (prefers-reduced-motion: no-preference) {
-        .fade-in {
-          animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) backwards;
-        }
-      }
-      @keyframes fadeIn {
-        from {
-          opacity: 0;
-          transform: translateY(10px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-      @keyframes pulse {
-        0%,
-        100% {
-          opacity: 1;
-        }
-        50% {
-          opacity: 0.35;
-        }
       }
       body {
-        background: var(--bg-glow), var(--bg);
+        background: var(--bg);
         color: var(--text);
-        font-family: var(--font-sans);
-        line-height: 1.6;
+        font-family: var(--body);
+        line-height: 1.55;
         -webkit-font-smoothing: antialiased;
       }
       a {
-        color: var(--accent);
-        text-decoration: none;
+        color: inherit;
       }
-      a:hover {
-        text-decoration: underline;
-      }
-      a:focus-visible,
-      button:focus-visible {
-        outline: 2px solid var(--accent);
+      a:focus-visible {
+        outline: 3px solid var(--text);
         outline-offset: 3px;
-        border-radius: 3px;
+        border-radius: 4px;
       }
       .wrap {
-        max-width: 800px;
+        max-width: 1180px;
         margin: 0 auto;
-        padding: 0 1.25rem;
+        padding: 0 24px;
       }
 
       nav {
         display: flex;
         justify-content: space-between;
-        align-items: baseline;
-        padding: 1.4rem 0;
-        font-family: var(--font-mono);
-        font-size: 0.85rem;
+        align-items: center;
+        padding: 22px 0;
+        font-size: 0.95rem;
       }
       nav .brand {
-        color: var(--muted);
-      }
-      nav .brand b {
-        color: var(--text);
+        display: flex;
+        align-items: center;
+        gap: 10px;
         font-weight: 600;
-      }
-      nav a.gh {
-        color: var(--muted);
-        transition: color 0.2s;
-      }
-      nav a.gh:hover {
-        color: var(--accent);
         text-decoration: none;
+      }
+      nav .brand img {
+        border-radius: 7px;
+      }
+      nav .gh {
+        color: var(--soft);
+        text-decoration: none;
+      }
+      nav .gh:hover {
+        color: var(--text);
       }
 
       header.hero {
-        padding: 2.4rem 0 2.8rem;
+        padding: 64px 0 56px;
+        border-bottom: 1px solid var(--line);
       }
-      .prompt-line {
-        font-family: var(--font-mono);
-        color: var(--dim);
-        font-size: 0.95rem;
+      .hero h1 {
+        font-family: var(--display);
+        font-weight: 800;
+        font-size: clamp(2.6rem, 7.2vw, 5.6rem);
+        line-height: 0.98;
+        letter-spacing: -0.035em;
+        font-variation-settings: "opsz" 96;
+        max-width: 11ch;
+      }
+      .hero p {
+        margin-top: 24px;
+        max-width: 46ch;
+        font-size: 1.15rem;
+        color: var(--soft);
+      }
+
+      section {
+        padding: 56px 0 8px;
+      }
+      .shead {
         display: flex;
-        gap: 0.6rem;
         align-items: baseline;
-        margin-bottom: 0.6rem;
+        gap: 14px;
+        margin-bottom: 22px;
       }
-      .prompt-line .sym {
-        color: var(--accent-dim);
-      }
-      h1 {
-        font-family: var(--font-display);
+      .shead h2 {
+        font-family: var(--display);
         font-weight: 700;
-        font-size: clamp(1.9rem, 5.5vw, 3rem);
-        line-height: 1.15;
+        font-size: 1.7rem;
         letter-spacing: -0.02em;
       }
-      .cursor {
-        display: inline-block;
-        width: 0.55em;
-        height: 1em;
-        background: var(--accent);
-        margin-left: 0.15em;
-        vertical-align: -0.12em;
+      .shead .count {
+        font-family: var(--mono);
+        font-size: 0.85rem;
+        color: var(--soft);
       }
-      @media (prefers-reduced-motion: no-preference) {
-        .cursor {
-          animation: pulse 1.1s step-end infinite;
-        }
-      }
-      .desc {
-        color: var(--muted);
-        margin-top: 1.1rem;
-        max-width: 40rem;
-        font-size: 1.02rem;
-      }
-      section {
-        padding: 1.7rem 0 0.4rem;
-      }
-      .section-head {
-        display: flex;
-        align-items: center;
-        gap: 0.7rem;
-        margin-bottom: 0.9rem;
-        font-family: var(--font-mono);
-        font-size: 0.82rem;
-        color: var(--dim);
-        text-transform: lowercase;
-        letter-spacing: 0.02em;
-      }
-      .section-head::before,
-      .section-head::after {
-        content: "";
-        flex: 1;
-        height: 1px;
-        background: var(--border);
-      }
-      .section-head .label {
-        white-space: nowrap;
+      .shead p {
+        color: var(--soft);
+        font-size: 0.95rem;
+        margin-left: auto;
       }
 
-      .rowlist {
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(12, 1fr);
+        gap: 16px;
+      }
+      .tile {
+        grid-column: span 6;
         display: flex;
         flex-direction: column;
-        gap: 0.6rem;
-      }
-      a.row {
-        position: relative;
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-        background: var(--panel);
-        border: 1px solid var(--border);
-        border-radius: 12px;
-        padding: 0.8rem 1.1rem 0.8rem 0.8rem;
-        color: var(--text);
-        box-shadow: var(--shadow);
         overflow: hidden;
-        transition:
-          transform 0.25s cubic-bezier(0.16, 1, 0.3, 1),
-          box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1),
-          border-color 0.25s,
-          background 0.25s;
-      }
-      a.row::before {
-        content: "";
-        position: absolute;
-        inset: 0;
-        background: radial-gradient(
-          160px 90px at 0% 50%,
-          color-mix(in srgb, var(--accent) 14%, transparent),
-          transparent 70%
-        );
-        opacity: 0;
-        transition: opacity 0.3s ease;
-        pointer-events: none;
-      }
-      @media (prefers-reduced-motion: no-preference) {
-        a.row:hover {
-          transform: translateY(-3px);
-          box-shadow: var(--shadow-hover);
-        }
-      }
-      a.row:hover {
-        border-color: var(--border-hi);
-        background: var(--panel-hover);
+        min-height: 460px;
+        padding: 28px 28px 0;
+        border-radius: 18px;
         text-decoration: none;
+        background: color-mix(in srgb, var(--a) 13%, var(--tile));
+        border: 1px solid color-mix(in srgb, var(--a) 22%, var(--line));
+        transition: border-color 0.2s;
       }
-      a.row:hover::before {
-        opacity: 1;
+      .tile:hover {
+        border-color: var(--a);
       }
-      a.row:hover .rowname {
-        color: var(--accent);
+      .tile:focus-visible {
+        outline: 3px solid var(--a);
+        outline-offset: 3px;
+        border-radius: 18px;
       }
-      a.row:hover .icon {
-        transform: scale(1.08) rotate(-3deg);
-        border-color: color-mix(in srgb, var(--accent) 55%, var(--border));
+      .tile.wide {
+        grid-column: span 12;
+        flex-direction: row;
+        gap: 40px;
+        min-height: 440px;
+        padding: 36px 0 0 36px;
       }
-      a.row:hover .icon svg {
-        transform: scale(1.05);
+      .tile.wide .ttext {
+        flex: 0 0 34%;
+        padding-bottom: 36px;
       }
-      a.row:hover .rowarrow {
-        opacity: 1;
-        transform: translateX(0);
+      .tile.third {
+        grid-column: span 4;
       }
 
-      .icon {
-        flex-shrink: 0;
-        width: 2.5rem;
-        height: 2.5rem;
-        border-radius: 9px;
+      .thead {
         display: flex;
         align-items: center;
-        justify-content: center;
-        background: linear-gradient(
-          160deg,
-          color-mix(in srgb, var(--accent) 18%, var(--panel)),
-          color-mix(in srgb, var(--accent) 4%, var(--panel))
-        );
-        border: 1px solid color-mix(in srgb, var(--accent) 25%, var(--border));
-        transition:
-          transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
-          border-color 0.3s;
+        gap: 12px;
       }
-      .icon svg {
-        width: 1.15rem;
-        height: 1.15rem;
-        stroke: var(--accent);
-        transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      .thead img {
+        border-radius: 10px;
+        flex-shrink: 0;
       }
-      .rowtext {
-        flex: 1;
-        min-width: 0;
+      .tile h3 {
+        font-family: var(--display);
+        font-weight: 800;
+        font-size: 2rem;
+        letter-spacing: -0.03em;
+        line-height: 1;
+        font-variation-settings: "opsz" 48;
       }
-      .rowname {
-        font-family: var(--font-mono);
-        font-weight: 600;
-        font-size: 0.95rem;
+      .tile.third h3 {
+        font-size: 1.6rem;
+      }
+      .tile .desc {
+        margin-top: 14px;
+        font-size: 1rem;
+        max-width: 40ch;
+      }
+      .tile .meta {
+        margin-top: 12px;
+        font-family: var(--mono);
+        font-size: 0.8rem;
+        color: var(--soft);
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px 14px;
+      }
+      .tile .instead {
+        margin-top: 14px;
+        font-size: 0.92rem;
+        color: var(--soft);
+      }
+      .tile .instead s {
         color: var(--text);
-        transition: color 0.2s;
+        text-decoration-thickness: 2px;
+        text-decoration-color: var(--a);
       }
-      .rowdesc {
-        font-size: 0.88rem;
-        color: var(--muted);
-        margin-top: 0.1rem;
+
+      /* The frame says where the app runs: browser, desktop window, phone or terminal. */
+      .frame {
+        margin-top: 26px;
+        background: var(--frame);
+        border: 1px solid var(--line);
+        border-bottom: 0;
+        border-radius: 12px 12px 0 0;
+        overflow: hidden;
+        box-shadow: 0 18px 40px -18px rgba(0, 0, 0, 0.35);
       }
-      .rowstate {
-        font-family: var(--font-mono);
-        font-size: 0.75rem;
-        color: var(--muted);
-        white-space: nowrap;
-        flex-shrink: 0;
+      .tile.wide .frame {
+        flex: 1;
+        margin-top: 8px;
+        border-right: 0;
+        border-radius: 12px 0 0 0;
       }
-      .rowarrow {
-        flex-shrink: 0;
-        color: var(--dim);
-        opacity: 0;
-        transform: translateX(-4px);
-        transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      .bar {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        height: 34px;
+        padding: 0 12px;
+        background: var(--frame-bar);
+        border-bottom: 1px solid var(--line);
+        font-family: var(--mono);
+        font-size: 0.72rem;
+        color: var(--soft);
       }
-      @media (hover: none) {
-        .rowarrow {
-          display: none;
-        }
+      .bar i {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: color-mix(in srgb, var(--soft) 45%, transparent);
       }
-      .aside {
-        margin-top: 2rem;
-        font-size: 0.88rem;
-        color: var(--muted);
+      .bar .url {
+        margin-left: 10px;
+        padding: 3px 12px;
+        border-radius: 6px;
+        background: var(--frame);
+        flex: 1;
+        max-width: 60%;
+      }
+      .bar .title {
+        margin: 0 auto;
+      }
+      .shot {
+        display: block;
+        width: 100%;
+        height: auto;
+        aspect-ratio: 16 / 10;
+        object-fit: cover;
+        object-position: top left;
+      }
+      .tile.wide .shot {
+        aspect-ratio: auto;
+        height: 100%;
+        min-height: 360px;
+      }
+      .frame.term {
+        background: #0b0d10;
+        border-color: #23272d;
+      }
+      .frame.term .bar {
+        background: #15181c;
+        border-color: #23272d;
+        color: #8d9196;
+      }
+      /* A wide, short capture shown at its own pixel size and cropped, so its text stays readable. */
+      .native {
+        height: 300px;
+        overflow: hidden;
+        background: #1e1e1e;
+      }
+      .native img {
+        display: block;
+        max-width: none;
+      }
+      /* No screenshot yet: the app's logo stands in, without pretending to be a window. */
+      .frame.lp {
+        display: grid;
+        place-items: center;
+        aspect-ratio: 16 / 10;
+        background: color-mix(in srgb, var(--a) 9%, var(--frame));
+        border-color: color-mix(in srgb, var(--a) 18%, var(--line));
+        box-shadow: none;
+      }
+      .frame.lp img {
+        border-radius: 20px;
+      }
+
+      .studies {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0 48px;
+        border-top: 1px solid var(--line);
+      }
+      .study {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 4px 16px;
+        padding: 18px 0;
+        border-bottom: 1px solid var(--line);
+        text-decoration: none;
+      }
+      .study h3 {
+        font-family: var(--display);
+        font-weight: 700;
+        font-size: 1.1rem;
+        letter-spacing: -0.01em;
+      }
+      .study p {
+        grid-column: 1;
+        color: var(--soft);
+        font-size: 0.93rem;
+      }
+      .study .go {
+        grid-row: 1 / span 2;
+        grid-column: 2;
+        align-self: center;
+        font-family: var(--mono);
+        font-size: 0.78rem;
+        color: var(--soft);
+      }
+      .study:hover h3 {
+        text-decoration: underline;
+        text-underline-offset: 4px;
       }
 
       footer {
-        border-top: 1px solid var(--border);
-        margin-top: 2.6rem;
-        padding: 1.6rem 0 2.8rem;
-        font-family: var(--font-mono);
-        font-size: 0.8rem;
-        color: var(--dim);
+        margin-top: 72px;
+        padding: 28px 0 48px;
+        border-top: 1px solid var(--line);
         display: flex;
         justify-content: space-between;
-        gap: 1rem;
         flex-wrap: wrap;
+        gap: 12px;
+        color: var(--soft);
+        font-size: 0.9rem;
       }
       footer a {
-        color: var(--dim);
-        transition: color 0.2s;
-      }
-      footer a:hover {
-        color: var(--accent);
+        text-underline-offset: 3px;
       }
 
-      @media (max-width: 480px) {
-        a.row {
-          flex-wrap: wrap;
+      @media (max-width: 860px) {
+        .tile,
+        .tile.third {
+          grid-column: span 12;
+          min-height: 0;
         }
-        .rowstate {
-          order: 1;
-          flex-basis: 100%;
-          padding-left: 3.3rem;
-          margin-top: -0.2rem;
+        .tile.wide {
+          flex-direction: column;
+          gap: 0;
+          padding: 28px 28px 0;
         }
-        .rowarrow {
+        .tile.wide .ttext {
+          flex: none;
+          padding-bottom: 0;
+        }
+        .tile.wide .frame {
+          margin-top: 26px;
+          border-right: 1px solid var(--line);
+          border-radius: 12px 12px 0 0;
+        }
+        .tile.wide .shot {
+          min-height: 0;
+          height: auto;
+          aspect-ratio: 16 / 10;
+        }
+        .studies {
+          grid-template-columns: 1fr;
+        }
+        .shead p {
           display: none;
         }
       }
@@ -386,261 +488,603 @@
   <body>
     <div class="wrap">
       <nav>
-        <span class="brand"
+        <a class="brand" href="./"
           ><img
             src="logo.svg"
             alt=""
-            width="22"
-            height="22"
-            style="
-              vertical-align: -5px;
-              margin-right: 0.4rem;
-              border-radius: 22%;
-            "
-          /><b>apps</b>.jay739.dev</span
+            width="28"
+            height="28"
+          />apps.jay739.dev</a
         >
-        <a class="gh" href="https://github.com/jay739">github &nearr;</a>
+        <a class="gh" href="https://github.com/jay739">GitHub &nearr;</a>
       </nav>
 
-      <header class="hero fade-in">
-        <p class="prompt-line"><span class="sym">$</span> whoami</p>
-        <h1>
-          jayakrishna konda<span class="cursor" aria-hidden="true"></span>
-        </h1>
-        <p class="desc">
-          Software I run myself instead of renting. Self-hosted alternatives to
-          paid services, native desktop and Android apps, and developer tooling.
-          All MIT licensed, all on
-          <a href="https://github.com/jay739">GitHub</a>.
+      <header class="hero">
+        <h1>Software I run myself instead of renting.</h1>
+        <p>
+          Self-hosted services, desktop and phone apps, and tools for
+          developers. All open source under MIT, with a few machine-learning
+          studies at the end.
         </p>
       </header>
 
-      <section class="fade-in" style="animation-delay: 0.05s">
-        <div class="section-head"><span class="label">self-hosted</span></div>
-        <div class="rowlist">
-          <a class="row" href="./scribe/">
-            <span class="icon" aria-hidden="true">
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke-width="2"
-                stroke-linecap="round"
-              >
-                <path d="M4 12v1M8 9v7M12 5v15M16 9v7M20 12v1" />
-              </svg>
-            </span>
-            <span class="rowtext">
-              <span class="rowname">scribe</span>
-              <span class="rowdesc"
-                >Your audio, transcribed on your own GPU.</span
-              >
-            </span>
-            <span class="rowstate">NVIDIA GPU</span>
-            <span class="rowarrow" aria-hidden="true">&rarr;</span>
-          </a>
-          <a class="row" href="./omnifin/">
-            <span class="icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
-                <circle cx="9" cy="12" r="5.5" />
-                <circle cx="15" cy="12" r="5.5" opacity="0.55" />
-              </svg>
-            </span>
-            <span class="rowtext">
-              <span class="rowname">omnifin</span>
-              <span class="rowdesc">Unified Jellyfin user management.</span>
-            </span>
-            <span class="rowstate">v1.4.1 &middot; Docker</span>
-            <span class="rowarrow" aria-hidden="true">&rarr;</span>
-          </a>
-          <a class="row" href="https://github.com/jay739/sitrep">
-            <span class="icon" aria-hidden="true">
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
-                <path d="M12 3 3 8l9 5 9-5-9-5Z" />
-                <path d="M3 16l9 5 9-5M3 12l9 5 9-5" />
-              </svg>
-            </span>
-            <span class="rowtext">
-              <span class="rowname">sitrep</span>
-              <span class="rowdesc"
-                >Self-hosted incident and status pages layered on Uptime
-                Kuma.</span
-              >
-            </span>
-            <span class="rowstate">v0.1.0 &middot; Docker</span>
-            <span class="rowarrow" aria-hidden="true">&rarr;</span>
-          </a>
+      <section aria-labelledby="h-self">
+        <div class="shead">
+          <h2 id="h-self">Self-hosted</h2>
+          <span class="count">5</span>
+          <p>Runs on your own server, opens in a browser.</p>
         </div>
-      </section>
-
-      <section class="fade-in" style="animation-delay: 0.1s">
-        <div class="section-head">
-          <span class="label">desktop and mobile</span>
-        </div>
-        <div class="rowlist">
-          <a class="row" href="./openhaze/">
-            <span class="icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
-                <rect x="3.5" y="4.5" width="17" height="15" rx="2.5" />
-                <rect
-                  x="3.5"
-                  y="4.5"
-                  width="17"
-                  height="15"
-                  rx="2.5"
-                  fill="currentColor"
-                  opacity="0.18"
-                  stroke="none"
+        <div class="grid">
+          <a class="tile wide a-omnifin" href="./omnifin/">
+            <div class="ttext">
+              <div class="thead">
+                <img
+                  src="img/logos/omnifin.svg"
+                  alt=""
+                  width="40"
+                  height="40"
                 />
-                <circle cx="12" cy="12" r="3.4" />
-              </svg>
-            </span>
-            <span class="rowtext">
-              <span class="rowname">openhaze</span>
-              <span class="rowdesc"
-                >Dim background windows. Focus on the one that matters.</span
-              >
-            </span>
-            <span class="rowstate">v0.3.0 &middot; macOS, Windows</span>
-            <span class="rowarrow" aria-hidden="true">&rarr;</span>
+                <h3>omnifin</h3>
+              </div>
+              <p class="desc">
+                Manages the people on a Jellyfin server: invites, accounts and
+                activity, from the web or a desktop app.
+              </p>
+              <p class="meta">
+                <span>v1.4.1</span><span>Docker</span><span>desktop app</span>
+              </p>
+            </div>
+            <figure class="frame">
+              <div class="bar">
+                <i></i><i></i><i></i
+                ><span class="url">localhost:18056/accounts</span>
+              </div>
+              <img
+                class="shot"
+                src="img/shots/omnifin.webp"
+                width="1440"
+                height="900"
+                decoding="async"
+                alt="Omnifin's Accounts page listing six Jellyfin users, with search, smart select and add user controls"
+              />
+            </figure>
           </a>
-          <a class="row" href="./wakeharder/">
-            <span class="icon" aria-hidden="true">
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
-                <path d="M5 18a7 7 0 0 1 14 0Z" />
-                <path d="M9.5 21a2.5 2.5 0 0 0 5 0" />
-                <path d="M12 4V2.5" />
-              </svg>
-            </span>
-            <span class="rowtext">
-              <span class="rowname">wakeharder</span>
-              <span class="rowdesc">The alarm you cannot sleep through.</span>
-            </span>
-            <span class="rowstate">Android</span>
-            <span class="rowarrow" aria-hidden="true">&rarr;</span>
+
+          <a class="tile a-scribe" href="./scribe/">
+            <div class="thead">
+              <img src="img/logos/scribe.svg" alt="" width="40" height="40" />
+              <h3>scribe</h3>
+            </div>
+            <p class="desc">
+              Transcribes audio on your own GPU, with a web UI, an API and a
+              CLI.
+            </p>
+            <p class="meta">
+              <span>Windows, Linux</span><span>NVIDIA GPU</span>
+            </p>
+            <p class="instead">Instead of <s>Otter.ai</s></p>
+            <figure class="frame">
+              <div class="bar">
+                <i></i><i></i><i></i><span class="url">localhost:8324</span>
+              </div>
+              <img
+                class="shot"
+                src="img/shots/scribe.webp"
+                width="1440"
+                height="900"
+                loading="lazy"
+                decoding="async"
+                alt="scribe showing a finished transcript of a short meeting, with timestamps and export buttons for txt, srt, vtt, md and json"
+              />
+            </figure>
           </a>
-          <a class="row" href="./triliage/">
-            <span class="icon" aria-hidden="true">
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
-                <path d="M12 3v18M12 8 7 5M12 12 6 9M12 16l-5-2.5" />
-              </svg>
-            </span>
-            <span class="rowtext">
-              <span class="rowname">triliage</span>
-              <span class="rowdesc"
-                >A modern, native desktop client for Trilium Notes.</span
-              >
-            </span>
-            <span class="rowstate">Windows</span>
-            <span class="rowarrow" aria-hidden="true">&rarr;</span>
+
+          <a class="tile a-sitrep" href="https://github.com/jay739/sitrep">
+            <div class="thead">
+              <img src="img/logos/sitrep.svg" alt="" width="40" height="40" />
+              <h3>sitrep</h3>
+            </div>
+            <p class="desc">
+              A public status page with incident updates, fed by Uptime Kuma,
+              with RSS and Telegram alerts.
+            </p>
+            <p class="meta"><span>v0.1.0</span><span>Docker</span></p>
+            <p class="instead">Instead of <s>Atlassian Statuspage</s></p>
+            <figure class="frame">
+              <div class="bar">
+                <i></i><i></i><i></i><span class="url">localhost:3300</span>
+              </div>
+              <img
+                class="shot"
+                src="img/shots/sitrep.webp"
+                width="1440"
+                height="900"
+                loading="lazy"
+                decoding="async"
+                alt="A sitrep status page with a major outage banner, an incident timeline and a scheduled database upgrade"
+              />
+            </figure>
+          </a>
+
+          <a class="tile a-cadence" href="https://github.com/jay739/cadence">
+            <div class="thead">
+              <img src="img/logos/cadence.svg" alt="" width="40" height="40" />
+              <h3>cadence</h3>
+            </div>
+            <p class="desc">
+              Request a single song and it is found and added to your music
+              library, no full albums.
+            </p>
+            <p class="meta"><span>v0.1.0</span><span>Python</span></p>
+            <div class="frame lp" aria-hidden="true">
+              <img
+                src="img/logos/cadence.svg"
+                alt=""
+                width="96"
+                height="96"
+                loading="lazy"
+              />
+            </div>
+          </a>
+
+          <a
+            class="tile a-email"
+            href="https://github.com/jay739/email-box-analyzer"
+          >
+            <div class="thead">
+              <img
+                src="img/logos/email-box-analyzer.svg"
+                alt=""
+                width="40"
+                height="40"
+              />
+              <h3>email-box-analyzer</h3>
+            </div>
+            <p class="desc">
+              Charts what is in your inbox: who sends the most, when mail
+              arrives, and how it changes over time.
+            </p>
+            <p class="meta"><span>FastAPI</span><span>Next.js</span></p>
+            <div class="frame lp" aria-hidden="true">
+              <img
+                src="img/logos/email-box-analyzer.svg"
+                alt=""
+                width="96"
+                height="96"
+                loading="lazy"
+              />
+            </div>
           </a>
         </div>
       </section>
 
-      <section class="fade-in" style="animation-delay: 0.15s">
-        <div class="section-head">
-          <span class="label">claude code hooks</span>
+      <section aria-labelledby="h-desktop">
+        <div class="shead">
+          <h2 id="h-desktop">Desktop and phone</h2>
+          <span class="count">6</span>
+          <p>Installs like any other app.</p>
         </div>
-        <div class="rowlist">
-          <a class="row" href="./claude-pop-quiz/">
-            <span class="icon" aria-hidden="true">
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke-width="2"
-                stroke-linecap="round"
-              >
-                <path d="M9.5 9a2.5 2.5 0 1 1 3.5 2.3c-.9.4-1.5 1.1-1.5 2.2" />
-                <circle
-                  cx="12"
-                  cy="17.5"
-                  r="0.9"
-                  fill="currentColor"
-                  stroke="none"
+        <div class="grid">
+          <a class="tile wide a-openhaze" href="./openhaze/">
+            <div class="ttext">
+              <div class="thead">
+                <img
+                  src="img/logos/openhaze.png"
+                  alt=""
+                  width="40"
+                  height="40"
                 />
-              </svg>
-            </span>
-            <span class="rowtext">
-              <span class="rowname">claude-pop-quiz</span>
-              <span class="rowdesc"
-                >Get quizzed on the code your agent wrote.</span
-              >
-            </span>
-            <span class="rowstate">v0.5.3</span>
-            <span class="rowarrow" aria-hidden="true">&rarr;</span>
+                <h3>openhaze</h3>
+              </div>
+              <p class="desc">
+                Dims every window except the one you are working in, so the rest
+                of the screen stops competing for attention.
+              </p>
+              <p class="meta">
+                <span>v0.3.0</span><span>macOS</span><span>Windows</span>
+              </p>
+              <p class="instead">Instead of <s>HazeOver</s></p>
+            </div>
+            <figure class="frame">
+              <img
+                class="shot"
+                src="img/shots/openhaze.webp"
+                width="800"
+                height="450"
+                loading="lazy"
+                decoding="async"
+                alt="A frame from a recording of openhaze running on a Windows desktop"
+              />
+            </figure>
           </a>
-          <a class="row" href="./claude-memory-checkpoint/">
-            <span class="icon" aria-hidden="true">
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
-                <path d="M12 4a8 8 0 1 0 5.7 2.4" />
-                <path d="M17.5 3.5v3.5H14" />
-              </svg>
-            </span>
-            <span class="rowtext">
-              <span class="rowname">claude-memory-checkpoint</span>
-              <span class="rowdesc"
-                >Long chats summarize themselves into project memory.</span
-              >
-            </span>
-            <span class="rowstate">no release yet</span>
-            <span class="rowarrow" aria-hidden="true">&rarr;</span>
+
+          <a
+            class="tile a-omnifin"
+            href="https://github.com/jay739/Omnifin-Windows"
+          >
+            <div class="thead">
+              <img src="img/logos/omnifin.svg" alt="" width="40" height="40" />
+              <h3>Omnifin for Windows</h3>
+            </div>
+            <p class="desc">
+              A native Windows app for running an Omnifin server.
+            </p>
+            <p class="meta"><span>v1.0.0</span><span>Windows</span></p>
+            <figure class="frame">
+              <img
+                class="shot"
+                src="img/shots/omnifin-windows.webp"
+                width="1440"
+                height="810"
+                loading="lazy"
+                decoding="async"
+                alt="Omnifin for Windows composing an announcement to six users"
+              />
+            </figure>
           </a>
-          <a class="row" href="./claude-autoformat/">
-            <span class="icon" aria-hidden="true">
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
-                <path d="M4 6h16M4 12h10M4 18h13" />
-              </svg>
-            </span>
-            <span class="rowtext">
-              <span class="rowname">claude-autoformat</span>
-              <span class="rowdesc"
-                >Every file Claude edits comes out formatted.</span
-              >
-            </span>
-            <span class="rowstate">no release yet</span>
-            <span class="rowarrow" aria-hidden="true">&rarr;</span>
+
+          <a
+            class="tile a-plash"
+            href="https://github.com/jay739/plash-desktop-customisations"
+          >
+            <div class="thead">
+              <img
+                src="img/logos/plash-desktop-customisations.svg"
+                alt=""
+                width="40"
+                height="40"
+              />
+              <h3>plash overlays</h3>
+            </div>
+            <p class="desc">
+              Small CSS and JavaScript overlays for Plash: a vertical clock, a
+              rotating quote.
+            </p>
+            <p class="meta"><span>macOS</span><span>Plash</span></p>
+            <div class="frame lp" aria-hidden="true">
+              <img
+                src="img/logos/plash-desktop-customisations.svg"
+                alt=""
+                width="96"
+                height="96"
+                loading="lazy"
+              />
+            </div>
+          </a>
+
+          <a class="tile third a-wakeharder" href="./wakeharder/">
+            <div class="thead">
+              <img
+                src="img/logos/wakeharder.svg"
+                alt=""
+                width="40"
+                height="40"
+              />
+              <h3>wakeharder</h3>
+            </div>
+            <p class="desc">
+              An alarm that only stops once you finish a task: a maths problem
+              or a barcode scan.
+            </p>
+            <p class="meta"><span>Android</span></p>
+            <p class="instead">Instead of <s>Alarmy</s></p>
+            <div class="frame lp" aria-hidden="true">
+              <img
+                src="img/logos/wakeharder.svg"
+                alt=""
+                width="96"
+                height="96"
+                loading="lazy"
+              />
+            </div>
+          </a>
+
+          <a class="tile third a-triliage" href="./triliage/">
+            <div class="thead">
+              <img src="img/logos/triliage.svg" alt="" width="40" height="40" />
+              <h3>triliage</h3>
+            </div>
+            <p class="desc">A native desktop client for Trilium Notes.</p>
+            <p class="meta"><span>Windows</span></p>
+            <div class="frame lp" aria-hidden="true">
+              <img
+                src="img/logos/triliage.svg"
+                alt=""
+                width="96"
+                height="96"
+                loading="lazy"
+              />
+            </div>
+          </a>
+
+          <a
+            class="tile third a-rainier"
+            href="https://github.com/jay739/rainier"
+          >
+            <div class="thead">
+              <img src="img/logos/rainier.svg" alt="" width="40" height="40" />
+              <h3>rainier</h3>
+            </div>
+            <p class="desc">
+              Desktop widgets for macOS in the spirit of Rainmeter, native and
+              open source.
+            </p>
+            <p class="meta"><span>macOS</span></p>
+            <div class="frame lp" aria-hidden="true">
+              <img
+                src="img/logos/rainier.svg"
+                alt=""
+                width="96"
+                height="96"
+                loading="lazy"
+              />
+            </div>
           </a>
         </div>
       </section>
 
-      <p class="aside fade-in" style="animation-delay: 0.2s">
-        Also in progress, not public yet: a native Windows client for Omnifin,
-        and HomelabTray, a system-tray monitor for homelab services.
-      </p>
+      <section aria-labelledby="h-dev">
+        <div class="shead">
+          <h2 id="h-dev">For developers</h2>
+          <span class="count">6</span>
+          <p>Hooks and command-line tools.</p>
+        </div>
+        <div class="grid">
+          <a class="tile a-popquiz" href="./claude-pop-quiz/">
+            <div class="thead">
+              <img
+                src="img/logos/claude-pop-quiz.svg"
+                alt=""
+                width="40"
+                height="40"
+              />
+              <h3>claude-pop-quiz</h3>
+            </div>
+            <p class="desc">
+              Quizzes you on your own Claude Code sessions, so you understand
+              the code that got written.
+            </p>
+            <p class="meta"><span>v0.5.3</span><span>Claude Code hook</span></p>
+            <figure class="frame term">
+              <div class="bar">
+                <i></i><i></i><i></i><span class="title">Claude Code</span>
+              </div>
+              <div class="native">
+                <img
+                  src="img/shots/claude-pop-quiz.png"
+                  width="1573"
+                  height="561"
+                  loading="lazy"
+                  decoding="async"
+                  alt="A five-question pop quiz in the Claude Code panel, two short answer and three multiple choice"
+                />
+              </div>
+            </figure>
+          </a>
+
+          <a class="tile a-memck" href="./claude-memory-checkpoint/">
+            <div class="thead">
+              <img
+                src="img/logos/claude-memory-checkpoint.svg"
+                alt=""
+                width="40"
+                height="40"
+              />
+              <h3>claude-memory-checkpoint</h3>
+            </div>
+            <p class="desc">
+              Summarises a long Claude Code chat into project memory every N
+              tool calls.
+            </p>
+            <p class="meta"><span>Claude Code hook</span></p>
+            <figure class="frame term">
+              <div class="bar">
+                <i></i><i></i><i></i><span class="title">terminal</span>
+              </div>
+              <img
+                class="shot"
+                src="img/shots/claude-memory-checkpoint.webp"
+                width="1080"
+                height="680"
+                loading="lazy"
+                decoding="async"
+                alt="The hook printing its memory checkpoint directive on the third tool call"
+              />
+            </figure>
+          </a>
+
+          <a class="tile a-autoformat" href="./claude-autoformat/">
+            <div class="thead">
+              <img
+                src="img/logos/claude-autoformat.svg"
+                alt=""
+                width="40"
+                height="40"
+              />
+              <h3>claude-autoformat</h3>
+            </div>
+            <p class="desc">
+              Formats each file the moment Claude Code edits it, with your
+              project's own formatter.
+            </p>
+            <p class="meta"><span>Claude Code hook</span></p>
+            <figure class="frame term">
+              <div class="bar">
+                <i></i><i></i><i></i><span class="title">terminal</span>
+              </div>
+              <img
+                class="shot"
+                src="img/shots/claude-autoformat.webp"
+                width="1080"
+                height="680"
+                loading="lazy"
+                decoding="async"
+                alt="A messy TypeScript file before and after the hook runs prettier on it"
+              />
+            </figure>
+          </a>
+
+          <a class="tile a-sitediff" href="https://github.com/jay739/sitediff">
+            <div class="thead">
+              <img src="img/logos/sitediff.svg" alt="" width="40" height="40" />
+              <h3>sitediff</h3>
+            </div>
+            <p class="desc">
+              Compares what two renderings of the same page actually show,
+              across environments.
+            </p>
+            <p class="meta">
+              <span>v0.1.0</span><span>Python</span><span>CLI</span>
+            </p>
+            <figure class="frame term">
+              <div class="bar">
+                <i></i><i></i><i></i><span class="title">terminal</span>
+              </div>
+              <img
+                class="shot"
+                src="img/shots/sitediff.webp"
+                width="1080"
+                height="680"
+                loading="lazy"
+                decoding="async"
+                alt="sitediff comparing the live hub with a redesign branch: status DRIFT, 38.5% similar"
+              />
+            </figure>
+          </a>
+
+          <a
+            class="tile a-ragproxy"
+            href="https://github.com/jay739/memory-rag-proxy"
+          >
+            <div class="thead">
+              <img
+                src="img/logos/memory-rag-proxy.svg"
+                alt=""
+                width="40"
+                height="40"
+              />
+              <h3>memory-rag-proxy</h3>
+            </div>
+            <p class="desc">
+              A health-checked proxy that fails over between local Ollama and
+              MLX machines.
+            </p>
+            <p class="meta"><span>Python</span><span>Ollama, MLX</span></p>
+            <figure class="frame term">
+              <div class="bar">
+                <i></i><i></i><i></i><span class="title">terminal</span>
+              </div>
+              <img
+                class="shot"
+                src="img/shots/memory-rag-proxy.webp"
+                width="1080"
+                height="680"
+                loading="lazy"
+                decoding="async"
+                alt="A question answered from injected memory notes while the primary host is down, with the proxy's log"
+              />
+            </figure>
+          </a>
+
+          <a
+            class="tile a-podcastai"
+            href="https://github.com/jay739/PodcastAI"
+          >
+            <div class="thead">
+              <img
+                src="img/logos/PodcastAI.svg"
+                alt=""
+                width="40"
+                height="40"
+              />
+              <h3>PodcastAI</h3>
+            </div>
+            <p class="desc">
+              Turns a PDF book into a character-voiced podcast with language
+              models and text to speech.
+            </p>
+            <p class="meta"><span>Python</span><span>notebook</span></p>
+            <div class="frame lp" aria-hidden="true">
+              <img
+                src="img/logos/PodcastAI.svg"
+                alt=""
+                width="96"
+                height="96"
+                loading="lazy"
+              />
+            </div>
+          </a>
+        </div>
+      </section>
+
+      <section aria-labelledby="h-ml">
+        <div class="shead">
+          <h2 id="h-ml">Machine learning and data</h2>
+          <span class="count">6</span>
+          <p>Studies and notebooks, not apps.</p>
+        </div>
+        <div class="studies">
+          <a
+            class="study"
+            href="https://nbviewer.org/urls/raw.githubusercontent.com/jay739/forest-fire-detection/main/eval.ipynb"
+          >
+            <h3>forest-fire-detection</h3>
+            <p>
+              Benchmarks eight CNN architectures for early fire detection on
+              aerial images.
+            </p>
+            <span class="go">notebook &nearr;</span>
+          </a>
+          <a
+            class="study"
+            href="https://nbviewer.org/urls/raw.githubusercontent.com/jay739/capm-analysis/main/capm_analysis.ipynb"
+          >
+            <h3>capm-analysis</h3>
+            <p>
+              CAPM regressions and risk-adjusted ratios for 54 stocks against
+              SPY.
+            </p>
+            <span class="go">notebook &nearr;</span>
+          </a>
+          <a
+            class="study"
+            href="https://nbviewer.org/urls/raw.githubusercontent.com/jay739/anti-money-laundering-detection/main/notebooks/aml_pipeline.ipynb"
+          >
+            <h3>anti-money-laundering-detection</h3>
+            <p>
+              A PySpark pipeline for spotting laundering in 32 million synthetic
+              transactions.
+            </p>
+            <span class="go">notebook &nearr;</span>
+          </a>
+          <a class="study" href="https://github.com/jay739/financial-analysis">
+            <h3>financial-analysis</h3>
+            <p>
+              A Streamlit dashboard for portfolio risk during crisis periods.
+            </p>
+            <span class="go">repo &nearr;</span>
+          </a>
+          <a class="study" href="https://github.com/jay739/youtube-analytics">
+            <h3>youtube-analytics</h3>
+            <p>A desktop tool for exploring YouTube creator statistics.</p>
+            <span class="go">repo &nearr;</span>
+          </a>
+          <a
+            class="study"
+            href="https://github.com/jay739/autonomous-robot-navigation-system"
+          >
+            <h3>autonomous-robot-navigation-system</h3>
+            <p>An ESP32 robot that detects objects with TensorFlow Lite.</p>
+            <span class="go">repo &nearr;</span>
+          </a>
+        </div>
+      </section>
+
       <footer>
         <span>&copy; 2026 Jayakrishna Konda</span>
         <span
           ><a href="https://jay739.dev">jay739.dev</a> &middot;
-          <a href="https://github.com/jay739">github</a></span
+          <a href="https://github.com/jay739">GitHub</a></span
         >
       </footer>
     </div>
