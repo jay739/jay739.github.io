@@ -309,8 +309,12 @@
       }
 
       /* The frame says where the app runs: browser, desktop window, phone or terminal. */
+      /* Frames sit on the tile's bottom edge, whatever the text above them takes. */
+      .tile > :nth-last-child(2) {
+        margin-bottom: 26px;
+      }
       .frame {
-        margin-top: 26px;
+        margin-top: auto;
         background: var(--frame);
         border: 1px solid var(--line);
         border-bottom: 0;
@@ -793,15 +797,17 @@
             </div>
             <p class="desc">A native desktop client for Trilium Notes.</p>
             <p class="meta"><span>Windows</span></p>
-            <div class="frame lp" aria-hidden="true">
+            <figure class="frame">
               <img
-                src="img/logos/triliage.svg"
-                alt=""
-                width="96"
-                height="96"
+                class="shot"
+                src="img/shots/triliage.webp"
+                width="1440"
+                height="810"
                 loading="lazy"
+                decoding="async"
+                alt="triliage connected to a Trilium server, with the note tree on the left and a note with a table open on the right"
               />
-            </div>
+            </figure>
           </a>
 
           <a
