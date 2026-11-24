@@ -18,16 +18,6 @@ Work on the apps.jay739.dev hub that is understood well enough to start without 
 - **Why:** `@latest` means whatever version npm serves today runs on apps.jay739.dev. A breaking major release silently blanks the page, and a compromised publish would run someone else's script on my domain. Skip this item if B-1 removes the page.
 - **Done when:** both tags name an exact version with an `integrity` hash and `crossorigin="anonymous"`, or the files are vendored into `timeline/`, and the page still renders and responds to clicks.
 
-## B-13: Stop the tile versions going stale
-
-- **Status:** open
-- **Size:** S
-- **Touches:** `index.html` (the version `<span>` in the `meta` line of the seven tiles that show one: omnifin, sitrep, cadence, openhaze, Omnifin for Windows, claude-pop-quiz and sitediff); option A also adds a workflow under `.github/workflows/` and a script under `.github/scripts/`
-- **Why:** the versions are typed by hand, so every release after a tile was written leaves it advertising an older one. openhaze still showed v0.3.0 after v0.4.0 shipped on 2026-11-21, and it was only caught by checking each tile against its repo by hand. Two ways out, not yet chosen:
-  - **A. Rewrite them on a schedule.** A cron workflow reads each repo's `releases/latest` and rewrites that tile's version span, the way `jay739/jay739` does with `.github/workflows/releases.yml` and `.github/scripts/update-releases.mjs` for its README block. All seven repos are public, so the default `GITHUB_TOKEN` can read them. Each span needs a hook to find it, such as `data-repo="jay739/openhaze"`, so the script never matches on the text. Risk: the `jay739/jay739` workflow pushes straight to its default branch, but `main` here is protected for admins too and requires `links`, so a bot push is refused. It has to open a PR that something then merges, or the protection has to change. A script that writes `index.html` badly breaks the whole hub, so it should only replace a span whose new value matches `vX.Y.Z` and leave the file untouched on any API error.
-  - **B. Drop the version from the tiles.** Nothing to maintain and nothing to break, since the version already lives on each repo's releases page. The cost is that the tiles say less about how far along each app is.
-- **Done when:** publishing a release in any of those repos cannot leave its tile showing an older version: with A, a new release reaches the hub within a day with no hand edit; with B, no tile shows a version at all.
-
 ## B-9: Carry the new look to the eight app pages
 
 - **Status:** open
