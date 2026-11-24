@@ -55,3 +55,12 @@ jobs:
         with:
           args: --no-progress --accept 200,206,429 --exclude "^file://" index.html timeline/index.html
           fail: true
+
+  scripts:
+    needs: changes
+    if: needs.changes.outputs.code == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Test the tile version script
+        run: node --test .github/scripts/tile-versions.test.mjs

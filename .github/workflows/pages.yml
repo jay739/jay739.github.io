@@ -1,0 +1,41 @@
+name: Pages
+
+# The site deploys from this workflow rather than straight from the branch, so
+# each tile's version can be filled in from that repo's latest release on the
+# copy being deployed, with nothing committed to main. The schedule is what
+# picks up a new release when nothing here has changed.
+on:
+  push:
+    branches: [main]
+  schedule:
+    - cron: "17 */6 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fill in tile versions from each repo's latest release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: node .github/scripts/tile-versions.mjs index.html
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+      - id: deployment
+        uses: actions/deploy-pages@v4
